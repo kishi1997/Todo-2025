@@ -7,10 +7,10 @@ const TodoItem = (todo: Todo) => {
       <div className="relative flex items-center">
         <input type="checkbox" className="opacity-0 absolute h-6 w-6" />
         <div
-          className={`border-2 rounded-md w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 ${todo.completed ? 'bg-blue-500 border-blue-500' : 'border-gray-500'}`}
+          className={`border-2 rounded-md w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 ${todo.complete ? 'bg-blue-500 border-blue-500' : 'border-gray-500'}`}
         >
           <svg
-            className={`fill-current w-3 h-3 text-white pointer-events-none ${todo.completed ? 'opacity-100' : 'opacity-0'}`}
+            className={`fill-current w-3 h-3 text-white pointer-events-none ${todo.complete ? 'opacity-100' : 'opacity-0'}`}
             viewBox="0 0 20 20"
           >
             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
@@ -18,9 +18,9 @@ const TodoItem = (todo: Todo) => {
         </div>
       </div>
       <span
-        className={`flex-grow text-gray-100 ${todo.completed ? 'line-through text-gray-500' : ''}`}
+        className={`flex-grow text-gray-100 ${todo.complete ? 'line-through text-gray-500' : ''}`}
       >
-        {todo.text}
+        {todo.task}
       </span>
       <button className="text-gray-500 hover:text-red-500 transition-colors">
         <svg

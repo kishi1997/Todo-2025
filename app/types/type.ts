@@ -1,5 +1,6 @@
 export type Todo = {
+  task: string;
   id: string;
-  text: string;
-  completed: boolean;
+  createdAt: Date;
+  complete: boolean;
 };
