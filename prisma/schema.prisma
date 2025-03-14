@@ -15,7 +15,7 @@ datasource db {
 }
 //テーブルを作成
 model Task {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   task String
   complete Boolean

@@ -1,5 +1,3 @@
-'use client';
-
 import FilterItems from './components/FilterItems';
 import NewTodoForm from './components/NewTodoForm';
 import TodoList from './components/TodoList';
