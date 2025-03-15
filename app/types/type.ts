@@ -1,6 +1,6 @@
 export type Todo = {
   task: string;
   id: string;
-  createdAt: Date;
+  createdAt: string;
   complete: boolean;
 };
