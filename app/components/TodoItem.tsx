@@ -4,24 +4,17 @@ import { Todo } from '../types/type';
 const TodoItem = (todo: Todo) => {
   return (
     <>
-      <div className="relative flex items-center">
-        <input type="checkbox" className="opacity-0 absolute h-6 w-6" />
-        <div
-          className={`border-2 rounded-md w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 ${todo.complete ? 'bg-blue-500 border-blue-500' : 'border-gray-500'}`}
-        >
-          <svg
-            className={`fill-current w-3 h-3 text-white pointer-events-none ${todo.complete ? 'opacity-100' : 'opacity-0'}`}
-            viewBox="0 0 20 20"
-          >
-            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-          </svg>
-        </div>
-      </div>
       <span
         className={`flex-grow text-gray-100 ${todo.complete ? 'line-through text-gray-500' : ''}`}
       >
         {todo.task}
       </span>
+      <span
+        className={`mr-3 text-xs px-2 py-1 rounded-xl hover:bg-gray-500 ${todo.complete ? 'text-gray-600 border-gray-600' : 'border-white'} border`}
+      >
+        {todo.complete ? '完了' : '未完了'}
+      </span>
+      <span className="mr-3 text-xs">{todo.createdAt}</span>
       <button className="text-gray-500 hover:text-red-500 transition-colors">
         <svg
           className="w-5 h-5"
