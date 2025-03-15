@@ -1,10 +1,12 @@
+'use client';
 import React from 'react';
 import TodoItem from './TodoItem';
-import { db } from '@/server/db';
 import { Todo } from '../types/type';
-
-async function TodoList() {
-  const todoList: Todo[] = await db.task.findMany();
+type TodoListProps = {
+  todoList: Todo[] | null;
+};
+function TodoList({ todoList }: TodoListProps) {
+  if (todoList == null) return <p>登録したtaskはまだありません</p>;
   return (
     <div className="space-y-2">
       {todoList.map((todo) => (
