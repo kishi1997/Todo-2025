@@ -27,3 +27,16 @@ export const addTodo = async (task: string) => {
     console.error(error);
   }
 };
+// todo削除
+export const deleteTodo = async (id: string) => {
+  try {
+    const deleteTodo = await db.task.delete({
+      where: {
+        id: id,
+      },
+    });
+    return deleteTodo;
+  } catch (error) {
+    console.error(error);
+  }
+};

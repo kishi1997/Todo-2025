@@ -2,6 +2,16 @@ import React from 'react';
 import { Todo } from '../types/type';
 
 const TodoItem = (todo: Todo) => {
+  const deleteTodo = async (e: React.MouseEvent<HTMLButtonElement>, deleteTodoId: string) => {
+    e.preventDefault();
+    await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST_URL}/api/todos`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ deleteTodoId }),
+    });
+  };
   return (
     <>
       <span
@@ -15,7 +25,12 @@ const TodoItem = (todo: Todo) => {
         {todo.complete ? '完了' : '未完了'}
       </span>
       <span className="mr-3 text-xs">{todo.createdAt}</span>
-      <button className="text-gray-500 hover:text-red-500 transition-colors">
+      <button
+        onClick={(e) => {
+          deleteTodo(e, todo.id);
+        }}
+        className="text-gray-500 hover:text-red-500 transition-colors"
+      >
         <svg
           className="w-5 h-5"
           fill="none"
