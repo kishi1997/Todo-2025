@@ -5,8 +5,11 @@ import FilterItems from './components/FilterItems';
 import NewTodoForm from './components/NewTodoForm';
 import TodoList from './components/TodoList';
 import { Todo } from './types/type';
+// type Status = 'all' | 'complete' | 'uncomplete';
 
 export default function Home() {
+  // const [status, setStatus] = useState<Status>('all');
+  const [initialTodoList, setInitialTodoList] = useState<Todo[] | null>([]);
   const [todoList, setTodoList] = useState<Todo[] | null>([]);
   // todo追加時にリストを更新する関数
   const updataTodoList = async (newTodo: Todo): Promise<void> => {
@@ -16,6 +19,44 @@ export default function Home() {
       }
       return [...prevTodos, newTodo];
     });
+    setInitialTodoList((prevInitialTodoList) => {
+      if (prevInitialTodoList == null) {
+        return [newTodo];
+      }
+      return [...prevInitialTodoList, newTodo];
+    });
+  };
+
+  const setFilterdTodoList = (status: string) => {
+    if (status === 'all') {
+      setTodoList(initialTodoList);
+    } else if (status === 'complete') {
+      if (initialTodoList == null) return;
+      const filterdTodoList = initialTodoList
+        .map((todo) => {
+          return {
+            task: todo.task,
+            id: todo.id,
+            createdAt: todo.createdAt,
+            complete: todo.complete,
+          };
+        })
+        .filter((todo: Todo) => todo.complete === true);
+      setTodoList(filterdTodoList);
+    } else if (status === 'uncomplete') {
+      if (initialTodoList == null) return;
+      const filterdTodoList = initialTodoList
+        .map((todo) => {
+          return {
+            task: todo.task,
+            id: todo.id,
+            createdAt: todo.createdAt,
+            complete: todo.complete,
+          };
+        })
+        .filter((todo: Todo) => todo.complete === false);
+      setTodoList(filterdTodoList);
+    }
   };
   // todoリストの取得
   useEffect(() => {
@@ -23,6 +64,7 @@ export default function Home() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST_URL}/api/todos`);
         const todos = await res.json();
+        setInitialTodoList(todos);
         setTodoList(todos);
       } catch (error) {
         console.error('エラーが発生しました', error);
@@ -43,7 +85,7 @@ export default function Home() {
           </div>
           <NewTodoForm updataTodoList={updataTodoList}></NewTodoForm>
           <TodoList todoList={todoList}></TodoList>
-          <FilterItems></FilterItems>
+          <FilterItems setFilterdTodoList={setFilterdTodoList}></FilterItems>
         </div>
         {/* 完了タスククリアボタン */}
         <div className="px-6 py-4 bg-gray-900 bg-opacity-60 flex justify-between items-center">
