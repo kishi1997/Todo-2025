@@ -1,6 +1,6 @@
 import { formatDate } from '@/app/utils/utils';
 import { db } from '@/server/db';
-import { addTodo, deleteTodo } from '@/server/supabaseFunction';
+import { addTodo, deleteTodo, editTodo } from '@/server/supabaseFunction';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
@@ -47,6 +47,17 @@ export async function DELETE(req: NextRequest) {
     const deletedTodo = await deleteTodo(deleteTodoId);
     if (deletedTodo == null) throw new Error('Failed to delete todo');
     return NextResponse.json(deletedTodo);
+  } catch (error) {
+    console.error('Failed to delete todo', error);
+  }
+}
+// タス編集API
+export async function PUT(req: NextRequest) {
+  const { id, task, complete } = await req.json();
+  try {
+    const editedTodo = await editTodo(id, task, complete);
+    if (editedTodo == null) throw new Error('Failed to delete todo');
+    return NextResponse.json(editedTodo);
   } catch (error) {
     console.error('Failed to delete todo', error);
   }
