@@ -1,34 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Todo } from '../types/type';
+import Modal from './Modal';
 
-const TodoItem = (todo: Todo) => {
-  const deleteTodo = async (e: React.MouseEvent<HTMLButtonElement>, deleteTodoId: string) => {
-    e.preventDefault();
-    await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST_URL}/api/todos`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ deleteTodoId }),
-    });
-  };
+type TodoItemProps = {
+  todo: Todo;
+  updateTodoList: (id: string) => void;
+};
+
+const TodoItem = (props: TodoItemProps) => {
+  // モーダルの開閉
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   return (
     <>
       <span
-        className={`flex-grow text-gray-100 ${todo.complete ? 'line-through text-gray-500' : ''}`}
+        className={`flex-grow text-gray-100 ${props.todo.complete ? 'line-through text-gray-500' : ''}`}
       >
-        {todo.task}
+        {props.todo.task}
       </span>
       <span
-        className={`mr-3 text-xs px-2 py-1 rounded-xl hover:bg-gray-500 ${todo.complete ? 'text-gray-600 border-gray-600' : 'border-white'} border`}
+        className={`mr-3 text-xs px-2 py-1 rounded-xl hover:bg-gray-500 ${props.todo.complete ? 'text-gray-600 border-gray-600' : 'border-white'} border`}
       >
-        {todo.complete ? '完了' : '未完了'}
+        {props.todo.complete ? '完了' : '未完了'}
       </span>
-      <span className="mr-3 text-xs">{todo.createdAt}</span>
+      <span className="mr-3 text-xs">{props.todo.createdAt}</span>
       <button
-        onClick={(e) => {
-          deleteTodo(e, todo.id);
-        }}
+        onClick={() => setIsModalOpen(true)}
         className="text-gray-500 hover:text-red-500 transition-colors"
       >
         <svg
@@ -46,6 +43,14 @@ const TodoItem = (todo: Todo) => {
           />
         </svg>
       </button>
+      <Modal
+        open={isModalOpen}
+        onOk={() => setIsModalOpen(false)}
+        onCancel={() => setIsModalOpen(false)}
+        id={props.todo.id}
+        task={props.todo.task}
+        updateTodoList={props.updateTodoList}
+      ></Modal>
     </>
   );
 };
