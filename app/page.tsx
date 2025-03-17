@@ -5,14 +5,13 @@ import FilterItems from './components/FilterItems';
 import NewTodoForm from './components/NewTodoForm';
 import TodoList from './components/TodoList';
 import { Todo } from './types/type';
-// type Status = 'all' | 'complete' | 'uncomplete';
 
 export default function Home() {
   // const [status, setStatus] = useState<Status>('all');
   const [initialTodoList, setInitialTodoList] = useState<Todo[] | null>([]);
   const [todoList, setTodoList] = useState<Todo[] | null>([]);
   // todo追加時にリストを更新する関数
-  const updataTodoList = async (newTodo: Todo): Promise<void> => {
+  const updataTodoList = async (newTodo: Todo) => {
     setTodoList((prevTodos) => {
       if (prevTodos == null) {
         return [newTodo];
@@ -26,7 +25,21 @@ export default function Home() {
       return [...prevInitialTodoList, newTodo];
     });
   };
-
+  // todos削除時にリストを更新する関数
+  const updateTodoListByDelete = (deletedTodoId: string) => {
+    setTodoList((prevTodos) => {
+      if (prevTodos == null) {
+        return [];
+      }
+      return prevTodos.filter((todo) => todo.id !== deletedTodoId);
+    });
+    setInitialTodoList((prevInitialTodoList) => {
+      if (prevInitialTodoList == null) {
+        return [];
+      }
+      return prevInitialTodoList.filter((todo) => todo.id !== deletedTodoId);
+    });
+  };
   const setFilterdTodoList = (status: string) => {
     if (status === 'all') {
       setTodoList(initialTodoList);
@@ -84,7 +97,7 @@ export default function Home() {
             <div className="h-3 w-3 rounded-full bg-blue-500 animate-pulse"></div>
           </div>
           <NewTodoForm updataTodoList={updataTodoList}></NewTodoForm>
-          <TodoList todoList={todoList}></TodoList>
+          <TodoList todoList={todoList} updateTodoListByDelete={updateTodoListByDelete}></TodoList>
           <FilterItems setFilterdTodoList={setFilterdTodoList}></FilterItems>
         </div>
         {/* 完了タスククリアボタン */}
