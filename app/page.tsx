@@ -98,7 +98,10 @@ export default function Home() {
           </div>
           <NewTodoForm updataTodoList={updataTodoList}></NewTodoForm>
           <TodoList todoList={todoList} updateTodoListByDelete={updateTodoListByDelete}></TodoList>
-          <FilterItems setFilterdTodoList={setFilterdTodoList}></FilterItems>
+          <FilterItems
+            setFilterdTodoList={setFilterdTodoList}
+            initialTodoList={initialTodoList}
+          ></FilterItems>
         </div>
         {/* 完了タスククリアボタン */}
         <div className="px-6 py-4 bg-gray-900 bg-opacity-60 flex justify-between items-center">
