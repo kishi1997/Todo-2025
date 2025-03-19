@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { CiCirclePlus } from 'react-icons/ci';
-import { useTodoStore } from '../store/Todostore';
+import { useTodoStore } from '../store/TodoStore';
 
 const NewTodoForm = () => {
   const { addTodo } = useTodoStore();

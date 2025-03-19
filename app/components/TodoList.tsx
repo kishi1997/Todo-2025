@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import TodoItem from './TodoItem';
-import { useTodoStore } from '../store/Todostore';
+import { useTodoStore } from '../store/TodoStore';
 
 function TodoList() {
   const { todos, getTodoList } = useTodoStore();

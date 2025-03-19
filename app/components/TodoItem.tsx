@@ -6,7 +6,7 @@ import { CiEdit } from 'react-icons/ci';
 import { CiTrash } from 'react-icons/ci';
 import { CiSaveDown2 } from 'react-icons/ci';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
-import { useTodoStore } from '../store/Todostore';
+import { useTodoStore } from '../store/TodoStore';
 
 type TodoItemProps = {
   todo: Todo;

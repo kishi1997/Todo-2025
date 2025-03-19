@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { useTodoStore } from '../store/Todostore';
 import { fetchTodoList } from '../utils/TodoUtils';
+import { useTodoStore } from '../store/TodoStore';
 
 const FilterItems = () => {
   const { todos, getTodoList, completeTodo, unCompleteTodo } = useTodoStore();
