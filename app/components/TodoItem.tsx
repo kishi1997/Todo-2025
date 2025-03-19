@@ -1,60 +1,57 @@
-import React, { useState } from 'react';
+'use client';
+import React, { useEffect, useRef, useState } from 'react';
 import { Todo } from '../types/type';
 import Modal from './Modal';
 import { CiEdit } from 'react-icons/ci';
 import { CiTrash } from 'react-icons/ci';
 import { CiSaveDown2 } from 'react-icons/ci';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
+import { useTodoStore } from '../store/Todostore';
+
 type TodoItemProps = {
   todo: Todo;
-  updateTodoList: (id: string) => void;
 };
 
-const TodoItem = (props: TodoItemProps) => {
+const TodoItem = ({ todo }: TodoItemProps) => {
+  const { editTodo } = useTodoStore();
   // モーダルの開閉
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [isEditTask, setIsEditTask] = useState<string>(props.todo.task);
-
-  const editTask = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [task, setTask] = useState<string>(todo.task);
+  // const [isEditTask, setIsEditTask] = useState<string>(todo.task);
+  const editorRef = useRef<HTMLInputElement>(null);
+  const editTask = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
-    await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST_URL}/api/todos`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: props.todo.id,
-        task: isEditTask,
-        complete: props.todo.complete,
-      }),
-    });
-    setIsEditTask('');
+    editTodo(task, todo.complete, todo.id);
     setIsEdit(false);
   };
+  useEffect(() => {
+    if (isEdit && editorRef.current) {
+      editorRef.current.focus();
+    }
+  }, [isEdit]);
+
   return (
     <>
       <span
-        className={`mr-3 text-xs px-2 py-1 rounded-xl hover:bg-gray-500 ${props.todo.complete ? 'text-gray-600 border-gray-600' : 'border-white'} border`}
+        className={`mr-3 text-xs px-2 py-1 rounded-xl hover:bg-gray-500 ${todo.complete ? 'text-gray-600 border-gray-600' : 'border-white'} border`}
       >
-        {props.todo.complete ? '完了' : '未完了'}
+        {todo.complete ? '完了' : '未完了'}
       </span>
-      <span
-        className={`flex-grow text-gray-100 ${props.todo.complete ? 'line-through text-gray-500' : ''}`}
-      >
-        {props.todo.task}
-      </span>
-      {/* 編集フォーム */}
+      <input
+        className={`px-2 py-2 flex-grow text-gray-100 ${todo.complete ? 'line-through text-gray-500' : ''} bg-transparent focus:outline-none focus:bg-white focus:bg-opacity-10`}
+        type="text"
+        value={task}
+        readOnly={!isEdit}
+        disabled={!isEdit}
+        ref={editorRef}
+        onChange={(e) => {
+          setTask(e.target.value);
+        }}
+      />
+      {/* 編集保存ボタン */}
       {isEdit ? (
         <div className="relative">
-          <input
-            className="w-full bg-gray-900 text-gray-100 px-4 py-3 rounded-lg pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-700"
-            type="text"
-            value={isEditTask}
-            onChange={(e) => {
-              setIsEditTask(e.target.value);
-            }}
-          />
           <button
             onClick={(e) => editTask(e)}
             className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-400"
@@ -63,7 +60,7 @@ const TodoItem = (props: TodoItemProps) => {
           </button>
         </div>
       ) : null}
-      {/* task編集変更ボタン */}
+      {/* task編集ボタン */}
       <button
         onClick={() => setIsEdit(!isEdit)}
         className="text-gray-500 hover:text-white transition-colors m-2"
@@ -74,20 +71,20 @@ const TodoItem = (props: TodoItemProps) => {
           <CiEdit className="w-6 h-6"></CiEdit>
         )}
       </button>
+      {/* 削除ボタン */}
       <button
         onClick={() => setIsModalOpen(true)}
         className="text-gray-500 hover:text-red-500 transition-colors mr-2"
       >
         <CiTrash className="w-6 h-6"></CiTrash>
       </button>
-      <span className="text-xs text-gray-500">{props.todo.createdAt}</span>
+      <span className="text-xs text-gray-500">{todo.createdAt}</span>
       <Modal
         open={isModalOpen}
         onOk={() => setIsModalOpen(false)}
         onCancel={() => setIsModalOpen(false)}
-        id={props.todo.id}
-        task={props.todo.task}
-        updateTodoList={props.updateTodoList}
+        id={todo.id}
+        task={todo.task}
       ></Modal>
     </>
   );

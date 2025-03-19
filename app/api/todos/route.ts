@@ -57,7 +57,13 @@ export async function PUT(req: NextRequest) {
   try {
     const editedTodo = await editTodo(id, task, complete);
     if (editedTodo == null) throw new Error('Failed to delete todo');
-    return NextResponse.json(editedTodo);
+    const formattedTodo = {
+      task: editedTodo.task,
+      id: editedTodo.id,
+      createdAt: formatDate(editedTodo.createdAt),
+      complete: editedTodo.complete,
+    };
+    return NextResponse.json(formattedTodo);
   } catch (error) {
     console.error('Failed to delete todo', error);
   }
