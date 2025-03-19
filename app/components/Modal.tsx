@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect } from 'react';
-import { useTodoStore } from '../store/Todostore';
+import { useTodoStore } from '../store/TodoStore';
 
 interface ModalProps {
   open: boolean;
