@@ -27,13 +27,13 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const { newTodo } = await req.json();
   try {
-    const NewTodo = await addTodo(newTodo);
-    if (NewTodo == null) throw new Error('Failed to add todo');
+    const addedTodo = await addTodo(newTodo);
+    if (addedTodo == null) throw new Error('Failed to add todo');
     const formattedTodo = {
-      task: NewTodo.task,
-      id: NewTodo.id,
-      createdAt: formatDate(NewTodo.createdAt),
-      complete: NewTodo.complete,
+      task: addedTodo.task,
+      id: addedTodo.id,
+      createdAt: formatDate(addedTodo.createdAt),
+      complete: addedTodo.complete,
     };
     return NextResponse.json(formattedTodo);
   } catch (error) {
@@ -57,7 +57,13 @@ export async function PUT(req: NextRequest) {
   try {
     const editedTodo = await editTodo(id, task, complete);
     if (editedTodo == null) throw new Error('Failed to delete todo');
-    return NextResponse.json(editedTodo);
+    const formattedTodo = {
+      task: editedTodo.task,
+      id: editedTodo.id,
+      createdAt: formatDate(editedTodo.createdAt),
+      complete: editedTodo.complete,
+    };
+    return NextResponse.json(formattedTodo);
   } catch (error) {
     console.error('Failed to delete todo', error);
   }
