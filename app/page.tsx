@@ -87,7 +87,7 @@ export default function Home() {
   }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-gray-800 bg-opacity-50 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl border border-gray-700">
+      <div className="w-full max-w-2xl bg-gray-800 bg-opacity-50 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl border border-gray-700">
         <div className="p-6">
           {/* タイトル */}
           <div className="flex items-center justify-between mb-6">

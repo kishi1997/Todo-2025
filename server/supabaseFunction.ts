@@ -40,3 +40,20 @@ export const deleteTodo = async (id: string) => {
     console.error(error);
   }
 };
+// todo編集
+export const editTodo = async (id: string, task: string, complete: boolean) => {
+  try {
+    const editedTodo = await db.task.update({
+      where: {
+        id: id,
+      },
+      data: {
+        task: task,
+        complete: complete,
+      },
+    });
+    return editedTodo;
+  } catch (error) {
+    console.error(error);
+  }
+};
