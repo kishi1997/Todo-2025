@@ -32,22 +32,24 @@ const Modal = (props: ModalProps) => {
     };
   }, [props.open]);
   return props.open ? (
-    <div>
-      <div className="bg-gray-800 bg-opacity-80 backdrop-blur-lg rounded-2xl shadow-xl p-6 w-80 h-48 flex flex-col justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-100">
+      <div className="bg-gray-800 bg-opacity-80 backdrop-blur-lg rounded-2xl shadow-xl p-6 w-80 flex flex-col justify-center items-center">
         <p className="text-lg text-gray-200 mb-5 text-center">「{props.task}」を削除しますか？</p>
-        <div className="flex w-full justify-center">
+        <div className="flex w-full justify-center space-x-4">
           <button
             onClick={(e) => deleteTodo(e)}
-            className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-2 rounded-lg transition-colors duration-200"
+            className="bg-red-600 hover:bg-red-500 text-white px-8 py-2 rounded-lg transition-colors duration-200"
           >
             削除する
           </button>
+          <button
+            onClick={props.onCancel}
+            className="bg-gray-600 hover:bg-gray-500 text-white px-8 py-2 rounded-lg transition-colors duration-200"
+          >
+            キャンセル
+          </button>
         </div>
       </div>
-      <div
-        onClick={props.onCancel}
-        className="fixed bg-black bg-opacity-60 w-full h-full z-10 top-0 left-0"
-      ></div>
     </div>
   ) : (
     <></>

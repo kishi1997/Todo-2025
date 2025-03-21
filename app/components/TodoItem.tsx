@@ -2,11 +2,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Todo } from '../types/type';
 import Modal from './Modal';
-import { CiEdit } from 'react-icons/ci';
+import { CiBookmarkCheck, CiEdit } from 'react-icons/ci';
 import { CiTrash } from 'react-icons/ci';
 import { CiSaveDown2 } from 'react-icons/ci';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { useTodoStore } from '../store/TodoStore';
+import { GiNightSleep } from 'react-icons/gi';
 
 type TodoItemProps = {
   todo: Todo;
@@ -18,7 +19,6 @@ const TodoItem = ({ todo }: TodoItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [task, setTask] = useState<string>(todo.task);
-  // const [isEditTask, setIsEditTask] = useState<string>(todo.task);
   const editorRef = useRef<HTMLInputElement>(null);
   const editTask = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
@@ -32,34 +32,41 @@ const TodoItem = ({ todo }: TodoItemProps) => {
   }, [isEdit]);
 
   return (
-    <>
-      <span
-        className={`mr-3 text-xs px-2 py-1 rounded-xl hover:bg-gray-500 ${todo.complete ? 'text-gray-600 border-gray-600' : 'border-white'} border`}
-      >
-        {todo.complete ? '完了' : '未完了'}
-      </span>
-      <input
-        className={`px-2 py-2 flex-grow text-gray-100 ${todo.complete ? 'line-through text-gray-500' : ''} bg-transparent focus:outline-none focus:bg-white focus:bg-opacity-10`}
-        type="text"
-        value={task}
-        readOnly={!isEdit}
-        disabled={!isEdit}
-        ref={editorRef}
-        onChange={(e) => {
-          setTask(e.target.value);
-        }}
-      />
-      {/* 編集保存ボタン */}
-      {isEdit ? (
+    <div className="flex shadow-md bg-gray-500 bg-opacity-10 backdrop-blur-lg rounded-2xl px-4 py-2 mb4 justify-between">
+      {todo.complete ? (
+        <span className="bg-green-500 text-white mr-4 flex items-center">
+          <CiBookmarkCheck className="w-6 h-6" />
+        </span>
+      ) : (
+        <span className="bg-gray-500 bg-opacity-10 text-white mr-4 flex items-center">
+          <GiNightSleep className="w-6 h-4" />
+        </span>
+      )}
+      <div className="flex flex-col">
         <div className="relative">
-          <button
-            onClick={(e) => editTask(e)}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-400"
-          >
-            <CiSaveDown2 className="w-6 h-6"></CiSaveDown2>
-          </button>
+          <input
+            className="mb-1 pr-2 py-2 flex-grow text-gray-100 bg-transparent focus:outline-none focus:bg-white focus:bg-opacity-10"
+            type="text"
+            value={task}
+            readOnly={!isEdit}
+            disabled={!isEdit}
+            ref={editorRef}
+            onChange={(e) => {
+              setTask(e.target.value);
+            }}
+          />
+          {/* 編集保存ボタン */}
+          {isEdit ? (
+            <button
+              onClick={(e) => editTask(e)}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-400"
+            >
+              <CiSaveDown2 className="w-6 h-6"></CiSaveDown2>
+            </button>
+          ) : null}
         </div>
-      ) : null}
+        <span className="text-xs text-gray-500">{todo.createdAt}</span>
+      </div>
       {/* task編集ボタン */}
       <button
         onClick={() => setIsEdit(!isEdit)}
@@ -74,11 +81,10 @@ const TodoItem = ({ todo }: TodoItemProps) => {
       {/* 削除ボタン */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="text-gray-500 hover:text-red-500 transition-colors mr-2"
+        className="text-gray-500 hover:text-red-500 transition-colors"
       >
         <CiTrash className="w-6 h-6"></CiTrash>
       </button>
-      <span className="text-xs text-gray-500">{todo.createdAt}</span>
       <Modal
         open={isModalOpen}
         onOk={() => setIsModalOpen(false)}
@@ -86,7 +92,7 @@ const TodoItem = ({ todo }: TodoItemProps) => {
         id={todo.id}
         task={todo.task}
       ></Modal>
-    </>
+    </div>
   );
 };
 

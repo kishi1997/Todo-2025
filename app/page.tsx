@@ -1,11 +1,21 @@
-import FilterItems from './components/FilterItems';
+'use client';
+import { useEffect } from 'react';
 import NewTodoForm from './components/NewTodoForm';
-import TodoList from './components/TodoList';
+import { useTodoStore } from './store/TodoStore';
+import AllTodoList from './components/todoList/AllTodoList';
+import CompleteTodoList from './components/todoList/CompleteTodoList';
+import UnCompleteTodoList from './components/todoList/UnCompleteTodoList';
 
 export default function Home() {
+  const { getTodoList } = useTodoStore();
+
+  useEffect(() => {
+    getTodoList();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-gray-800 bg-opacity-50 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl border border-gray-700">
+      <div className="w-full bg-gray-800 bg-opacity-50 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl border border-gray-700">
         <div className="p-6">
           {/* タイトル */}
           <div className="flex items-center justify-between mb-6">
@@ -14,10 +24,13 @@ export default function Home() {
             </h1>
             <div className="h-3 w-3 rounded-full bg-blue-500 animate-pulse"></div>
           </div>
-
           <NewTodoForm></NewTodoForm>
-          <TodoList></TodoList>
-          <FilterItems></FilterItems>
+          <div className="flex items-start justify-between">
+            <AllTodoList></AllTodoList>
+            <CompleteTodoList></CompleteTodoList>
+            <UnCompleteTodoList></UnCompleteTodoList>
+          </div>
+          {/* <FilterItems></FilterItems> */}
         </div>
         {/* 完了タスククリアボタン */}
         <div className="px-6 py-4 bg-gray-900 bg-opacity-60 flex justify-between items-center">
